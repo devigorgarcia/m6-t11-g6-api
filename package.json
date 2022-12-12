@@ -1,0 +1,24 @@
+{
+  "name": "m6-t11-g6-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:devigorgarcia/m6-t11-g6-api.git",
+  "author": "Igor Garcia <igorgg@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/cors": "^2.8.13",
+    "@types/express": "^4.17.14",
+    "@types/node": "^18.11.13",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-async-errors": "^3.1.1",
+    "pg": "^8.8.0",
+    "prisma": "^4.7.1",
+    "reflect-metadata": "^0.1.13"
+  }
+}
