@@ -40,6 +40,12 @@ export class UsersService {
     return response;
   }
 
+  async listUsers() {
+    const users = this.prisma.user.findMany();
+
+    return users;
+  }
+
   async listUser(userId: string) {
     const user = await this.prisma.user.findUnique({
       where: {
@@ -56,7 +62,6 @@ export class UsersService {
   }
 
   async updateUser(data: UserUpdateDTO, userId: string) {
-    console.log(userId);
     const user = await this.prisma.user.findFirst({
       where: {
         id: userId,
