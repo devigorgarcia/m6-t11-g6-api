@@ -21,6 +21,11 @@ export class UsersController {
     return this.usersService.create(data);
   }
 
+  @Get()
+  async listUsers() {
+    return this.usersService.listUsers();
+  }
+
   @Get(':userId')
   async listUser(@Param('userId') userId: string) {
     return this.usersService.listUser(userId);
