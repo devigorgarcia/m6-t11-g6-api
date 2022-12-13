@@ -9,3 +9,64 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id          String    @id @unique @default(uuid())
+  name        String
+  password    String
+  email       String    @unique
+  cpf         String    @unique
+  fone        String
+  birthday    DateTime
+  descripiton String
+  is_admin    Boolean
+  address     Address?
+  vehicle     Vehicle[]
+  Comment     Comment[]
+
+  @@map("users")
+}
+
+model Address {
+  id         String @id @unique @default(uuid())
+  cep        String
+  state      String
+  city       String
+  street     String
+  number     Int
+  complement String
+  user       User   @relation(fields: [userId], references: [id])
+  userId     String @unique
+
+  @@map("addresses")
+}
+
+model Vehicle {
+  id          String    @id @unique @default(uuid())
+  title       String
+  year        Int
+  km          Decimal
+  price       Decimal
+  description String
+  isCar       Boolean
+  frontImg    String
+  galleryImg  String[]
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String
+  Comment     Comment[]
+
+  @@map("vehicles")
+}
+
+model Comment {
+  id        String   @unique @default(uuid())
+  content   String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  vehicle   Vehicle  @relation(fields: [vehicleId], references: [id])
+  vehicleId String
+
+  @@id([userId, vehicleId])
+  @@map("comments")
+}
