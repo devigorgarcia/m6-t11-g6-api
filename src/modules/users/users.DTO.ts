@@ -1,9 +1,12 @@
+import { Exclude } from 'class-transformer';
 import { IsNotEmpty, IsOptional } from 'class-validator';
+import { AddressCreateDTO } from '../addresses/address.DTO';
 
 export class UserCreateDTO {
   @IsNotEmpty()
   name: string;
   @IsNotEmpty()
+  @Exclude({ toPlainOnly: true })
   password: string;
   @IsNotEmpty()
   email: string;
@@ -17,6 +20,8 @@ export class UserCreateDTO {
   descripiton: string;
   @IsNotEmpty()
   is_admin: boolean;
+  @IsNotEmpty()
+  address: AddressCreateDTO;
 }
 
 export class UserUpdateDTO {

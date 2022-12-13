@@ -4,6 +4,8 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserCreateDTO, UserUpdateDTO } from './users.DTO';
 import { hash } from 'bcrypt';
 import { validate_date } from 'src/utils/dateValidator';
+import { cepValidator } from 'src/utils/cepValidator';
+// import { phoneValidator } from 'src/utils/phoneValidator';
 
 @Injectable()
 export class UsersService {
@@ -25,23 +27,53 @@ export class UsersService {
     const newDate = new Date(data.birthday);
 
     cpfValidator(data.cpf);
+    // phoneValidator(data.fone);
     validate_date(data.birthday);
+    cepValidator(data.address.cep);
 
     const newUser = await this.prisma.user.create({
       data: {
         ...data,
         password: hashedPassword,
         birthday: newDate,
+        address: {
+          create: data.address,
+        },
+      },
+      select: {
+        id: true,
+        name: true,
+        password: false,
+        email: true,
+        cpf: true,
+        fone: true,
+        birthday: true,
+        descripiton: true,
+        is_admin: false,
+        address: true,
       },
     });
 
-    const { password, ...response } = newUser;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
 
-    return response;
+    return newUser;
   }
 
   async listUsers() {
-    const users = this.prisma.user.findMany();
+    const users = this.prisma.user.findMany({
+      select: {
+        id: true,
+        name: true,
+        password: false,
+        email: true,
+        cpf: true,
+        fone: true,
+        birthday: true,
+        descripiton: true,
+        is_admin: false,
+        address: true,
+      },
+    });
 
     return users;
   }
@@ -56,6 +88,7 @@ export class UsersService {
     if (!user) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...response } = user;
 
     return response;
@@ -79,6 +112,7 @@ export class UsersService {
       },
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...response } = updatedUser;
 
     return response;
