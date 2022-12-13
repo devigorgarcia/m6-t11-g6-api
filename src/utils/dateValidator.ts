@@ -3,14 +3,12 @@ import { HttpStatus } from '@nestjs/common/enums';
 
 export const validate_date = (date_req: string) => {
   const birthdayDate = String(date_req);
-  console.log(birthdayDate);
 
   const birthday = birthdayDate.split('/')[0];
   const birthmonth = birthdayDate.split('/')[1];
   const birthyear = birthdayDate.split('/')[2];
 
   const currentYear = new Date().getFullYear();
-  console.log(currentYear);
 
   if (+birthday > 31 || +birthday < 0) {
     throw new HttpException(

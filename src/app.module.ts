@@ -9,9 +9,10 @@ import { MiddlewareConsumer } from '@nestjs/common/interfaces/middleware';
 import { AuthMiddleware } from './middlewares/auth.middleware';
 import { RequestMethod } from '@nestjs/common/enums';
 import { IsAdminOrOwnerMiddleware } from './middlewares/isaAdminOrOwner.middleware';
+import { AddressesModule } from './modules/addresses/addresses.module';
 
 @Module({
-  imports: [PrismaModule, UsersModule, LoginModule],
+  imports: [PrismaModule, UsersModule, LoginModule, AddressesModule],
   controllers: [AppController],
   providers: [AppService],
 })
