@@ -9,9 +9,10 @@ import { MiddlewareConsumer } from '@nestjs/common/interfaces/middleware';
 import { AuthMiddleware } from './middlewares/auth.middleware';
 import { RequestMethod } from '@nestjs/common/enums';
 import { IsAdminOrOwnerMiddleware } from './middlewares/isaAdminOrOwner.middleware';
+import { VehiclesModule } from './modules/vehicles/vehicles.module';
 
 @Module({
-  imports: [PrismaModule, UsersModule, LoginModule],
+  imports: [PrismaModule, UsersModule, LoginModule, VehiclesModule],
   controllers: [AppController],
   providers: [AppService],
 })
@@ -25,5 +26,8 @@ export class AppModule implements NestModule {
       path: 'users/:userId',
       method: RequestMethod.DELETE,
     });
+    consumer
+      .apply(AuthMiddleware)
+      .forRoutes({ path: 'vehicles', method: RequestMethod.ALL });
   }
 }
