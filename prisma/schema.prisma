@@ -19,7 +19,7 @@ model User {
   fone        String
   birthday    DateTime
   descripiton String
-  is_admin    Boolean
+  is_buyer    Boolean
   address     Address?
   vehicle     Vehicle[]
   Comment     Comment[]
