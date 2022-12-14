@@ -34,12 +34,12 @@ export class CommentsController {
     return this.commentsService.findVehiclesAll(vehicleId);
   }
 
-  @Get(':commentId')
-  findOne(@Param('commentId') commentId: string) {
+  @Get(':commentId/comment')
+  async findOne(@Param('commentId') commentId: string) {
     return this.commentsService.findOne(commentId);
   }
 
-  @Patch(':commentId')
+  @Patch(':commentId/comment')
   update(
     @Param('commentId') commentId: string,
     @Body() data: UpdateCommentDto,
@@ -47,7 +47,7 @@ export class CommentsController {
     return this.commentsService.update(commentId, data);
   }
 
-  @Delete(':commentId')
+  @Delete(':commentId/comment')
   @HttpCode(204)
   remove(@Param('commentId') commentId: string) {
     return this.commentsService.remove(commentId);

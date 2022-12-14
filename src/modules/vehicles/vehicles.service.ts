@@ -41,9 +41,23 @@ export class VehiclesService {
       where: {
         id: vehicleId,
       },
-      include: {
+      select: {
+        id: true,
+        title: true,
+        price: true,
+        year: true,
+        km: true,
+        isCar: true,
+        description: true,
+        frontImg: true,
+        galleryImg: true,
+        user: {
+          select: {
+            name: true,
+            descripiton: true,
+          },
+        },
         Comment: true,
-        user: true,
       },
     });
 

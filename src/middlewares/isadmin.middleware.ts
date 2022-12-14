@@ -9,9 +9,8 @@ import { Request, Response } from 'express';
 @Injectable()
 export class IsAdminMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: any) {
-    const { is_admin, id } = req.user;
-    const { userId } = req.params;
-    if (is_admin && id == userId) {
+    const { is_admin } = req.user;
+    if (is_admin) {
       next();
     } else {
       throw new HttpException(

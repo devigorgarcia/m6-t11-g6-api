@@ -49,7 +49,7 @@ export class CommentsService {
   }
 
   async findVehiclesAll(vehicleId: string) {
-    const vehicle = this.prisma.vehicle.findFirst({
+    const vehicle = await this.prisma.vehicle.findFirst({
       where: {
         id: vehicleId,
       },
@@ -63,8 +63,17 @@ export class CommentsService {
       where: {
         vehicleId: vehicleId,
       },
-      include: {
-        user: true,
+      select: {
+        id: true,
+        content: true,
+        createdAt: true,
+        userId: true,
+        user: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
       },
     });
 

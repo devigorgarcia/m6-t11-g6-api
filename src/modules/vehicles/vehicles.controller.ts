@@ -42,7 +42,7 @@ export class VehiclesController {
     return this.vehiclesService.updateVehicle(data, vehicleId);
   }
 
-  @Delete('vehicleId')
+  @Delete(':vehicleId')
   @HttpCode(204)
   async deleteVehicle(@Param('vehicleId') vehicleId: string) {
     return this.vehiclesService.deleteVehicle(vehicleId);
