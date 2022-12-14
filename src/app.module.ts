@@ -8,26 +8,50 @@ import { NestModule } from '@nestjs/common/interfaces/modules';
 import { MiddlewareConsumer } from '@nestjs/common/interfaces/middleware';
 import { AuthMiddleware } from './middlewares/auth.middleware';
 import { RequestMethod } from '@nestjs/common/enums';
-import { IsAdminOrOwnerMiddleware } from './middlewares/isaAdminOrOwner.middleware';
 import { AddressesModule } from './modules/addresses/addresses.module';
 import { VehiclesModule } from './modules/vehicles/vehicles.module';
+import { CommentsModule } from './modules/comments/comments.module';
+import { IsOrOwnerMiddleware } from './middlewares/isOwner.middleware';
+import { IsAdminMiddleware } from './middlewares/isadmin.middleware';
 @Module({
-  imports: [PrismaModule, UsersModule, LoginModule, AddressesModule, VehiclesModule],
+  imports: [
+    PrismaModule,
+    UsersModule,
+    LoginModule,
+    AddressesModule,
+    VehiclesModule,
+    CommentsModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware, IsAdminOrOwnerMiddleware).forRoutes({
+    consumer.apply(AuthMiddleware, IsOrOwnerMiddleware).forRoutes({
       path: 'users/:userId',
       method: RequestMethod.PATCH,
     });
-    consumer.apply(AuthMiddleware).forRoutes({
+    consumer.apply(AuthMiddleware, IsOrOwnerMiddleware).forRoutes({
       path: 'users/:userId',
       method: RequestMethod.DELETE,
     });
     consumer
+      .apply(AuthMiddleware, IsAdminMiddleware)
+      .forRoutes({ path: 'vehicles', method: RequestMethod.POST });
+    consumer
+      .apply(AuthMiddleware, IsAdminMiddleware)
+      .forRoutes({ path: 'vehicles/:vehicleId', method: RequestMethod.PATCH });
+    consumer
+      .apply(AuthMiddleware, IsAdminMiddleware)
+      .forRoutes({ path: 'vehicles/:vehicleId', method: RequestMethod.DELETE });
+    consumer
       .apply(AuthMiddleware)
-      .forRoutes({ path: 'vehicles', method: RequestMethod.ALL });
+      .forRoutes({ path: 'comments/:vehicleId', method: RequestMethod.POST });
+    consumer
+      .apply(AuthMiddleware, IsOrOwnerMiddleware)
+      .forRoutes({ path: 'comments/:vehicleId', method: RequestMethod.PATCH });
+    consumer
+      .apply(AuthMiddleware, IsOrOwnerMiddleware)
+      .forRoutes({ path: 'comments/:vehicleId', method: RequestMethod.DELETE });
   }
 }

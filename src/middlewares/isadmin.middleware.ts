@@ -7,22 +7,17 @@ import {
 import { Request, Response } from 'express';
 
 @Injectable()
-export class IsAdminOrOwnerMiddleware implements NestMiddleware {
+export class IsAdminMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: any) {
-    const isAdmin = req.user.is_admin;
-    const id = req.user.id;
+    const { is_admin, id } = req.user;
     const { userId } = req.params;
-    console.log(isAdmin);
-    console.log(id);
-    console.log(userId);
-
-    if (!isAdmin && id !== userId) {
+    if (is_admin && id == userId) {
+      next();
+    } else {
       throw new HttpException(
-        'You dont have permission',
+        'You dont have autorhization',
         HttpStatus.UNAUTHORIZED,
       );
     }
-
-    next();
   }
 }
