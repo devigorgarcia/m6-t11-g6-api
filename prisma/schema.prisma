@@ -13,13 +13,13 @@ datasource db {
 model User {
   id          String    @id @unique @default(uuid())
   name        String
-  password    String    
+  password    String
   email       String    @unique
   cpf         String    @unique
   fone        String
   birthday    DateTime
   descripiton String
-  is_buyer    Boolean
+  is_admin    Boolean
   address     Address?
   vehicle     Vehicle[]
   Comment     Comment[]
