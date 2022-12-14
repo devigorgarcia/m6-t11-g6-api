@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Req,
+  HttpCode,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { CommentsService } from './comments.service';
@@ -18,6 +19,7 @@ export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
   @Post(':vehicleId')
+  @HttpCode(201)
   create(
     @Body() data: CreateCommentDto,
     @Param('vehicleId') vehicleId: string,
@@ -40,12 +42,13 @@ export class CommentsController {
   @Patch(':commentId')
   update(
     @Param('commentId') commentId: string,
-    @Body() updateCommentDto: UpdateCommentDto,
+    @Body() data: UpdateCommentDto,
   ) {
-    return this.commentsService.update(commentId, updateCommentDto);
+    return this.commentsService.update(commentId, data);
   }
 
   @Delete(':commentId')
+  @HttpCode(204)
   remove(@Param('commentId') commentId: string) {
     return this.commentsService.remove(commentId);
   }

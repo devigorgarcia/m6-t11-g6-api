@@ -86,10 +86,41 @@ export class CommentsService {
   }
 
   async update(commentId: string, data: UpdateCommentDto) {
-    return `This action updates a #${commentId} comment`;
+    const comment = await this.prisma.comment.findFirst({
+      where: {
+        id: commentId,
+      },
+    });
+    if (!comment) {
+      throw new HttpException('Comment not found', HttpStatus.NOT_FOUND);
+    }
+
+    const updatedComment = await this.prisma.comment.update({
+      data: {
+        content: data.content,
+      },
+      where: {
+        id: commentId,
+      },
+    });
+
+    return updatedComment;
   }
 
   async remove(commentId: string) {
-    return `This action removes a #${commentId} comment`;
+    const comment = await this.prisma.comment.findFirst({
+      where: {
+        id: commentId,
+      },
+    });
+    if (!comment) {
+      throw new HttpException('Comment not found', HttpStatus.NOT_FOUND);
+    }
+
+    await this.prisma.comment.delete({
+      where: {
+        id: commentId,
+      },
+    });
   }
 }
