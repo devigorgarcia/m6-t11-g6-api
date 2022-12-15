@@ -5,21 +5,31 @@ import { UserCreateDTO, UserUpdateDTO } from './users.DTO';
 import { hash } from 'bcrypt';
 import { validate_date } from 'src/utils/dateValidator';
 import { cepValidator } from 'src/utils/cepValidator';
-// import { phoneValidator } from 'src/utils/phoneValidator';
+import { phoneValidator } from 'src/utils/phoneValidator';
 
 @Injectable()
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
   async create(data: UserCreateDTO) {
-    const user = await this.prisma.user.findUnique({
+    const userEmail = await this.prisma.user.findUnique({
       where: {
         email: data.email,
       },
     });
 
-    if (user) {
+    const userCpf = await this.prisma.user.findUnique({
+      where: {
+        cpf: data.cpf,
+      },
+    });
+
+    if (userEmail) {
       throw new HttpException('email already exists', HttpStatus.CONFLICT);
+    }
+
+    if (userCpf) {
+      throw new HttpException('cpf already exists', HttpStatus.CONFLICT);
     }
 
     const hashedPassword = await hash(data.password, 10);
@@ -27,7 +37,7 @@ export class UsersService {
     const newDate = new Date(data.birthday);
 
     cpfValidator(data.cpf);
-    // phoneValidator(data.fone);
+    phoneValidator(data.fone);
     validate_date(data.birthday);
     cepValidator(data.address.cep);
 
@@ -82,6 +92,9 @@ export class UsersService {
     const user = await this.prisma.user.findUnique({
       where: {
         id: userId,
+      },
+      include: {
+        vehicle: true,
       },
     });
 

@@ -8,24 +8,23 @@ import { Request, Response } from 'express';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
-export class IsOwnerMiddleware implements NestMiddleware {
+export class IsSellerOwnerMiddleware implements NestMiddleware {
   constructor(private prisma: PrismaService) {}
-
   async use(req: Request, res: Response, next: any) {
     const id = req.user.id;
-    const { userId } = req.params;
+    const { vehicleId } = req.params;
 
-    const user = await this.prisma.user.findFirst({
+    const vehicle = await this.prisma.vehicle.findFirst({
       where: {
-        id: userId,
+        id: vehicleId,
       },
     });
 
-    if (!user) {
-      throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
+    if (!vehicle) {
+      throw new HttpException('Vehicle not found!', HttpStatus.BAD_REQUEST);
     }
 
-    if (id !== userId) {
+    if (id !== vehicle.userId) {
       throw new HttpException(
         'You dont have permission',
         HttpStatus.UNAUTHORIZED,
