@@ -45,7 +45,10 @@ export class AppModule implements NestModule {
       .forRoutes({ path: 'vehicles/:vehicleId', method: RequestMethod.PATCH });
     consumer
       .apply(AuthMiddleware, IsSellerOwnerMiddleware, IsAdminMiddleware)
-      .forRoutes({ path: 'vehicles/:vehicleId', method: RequestMethod.DELETE });
+      .forRoutes({
+        path: 'vehicles/inactivate/:vehicleId',
+        method: RequestMethod.PATCH,
+      });
     consumer
       .apply(AuthMiddleware)
       .forRoutes({ path: 'comments/:vehicleId', method: RequestMethod.POST });

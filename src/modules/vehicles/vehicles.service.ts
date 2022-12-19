@@ -15,6 +15,15 @@ export class VehiclesService {
     if (!user) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
+    const newGallery = [];
+    if (data.gallery) {
+      data.gallery.forEach((imageURL) => {
+        const newUrl = {
+          url: imageURL,
+        };
+        newGallery.push(newUrl);
+      });
+    }
 
     const vehicle = await this.prisma.vehicle.create({
       data: {
@@ -24,6 +33,14 @@ export class VehiclesService {
             id: userId,
           },
         },
+        gallery: {
+          createMany: {
+            data: [...newGallery],
+          },
+        },
+      },
+      include: {
+        gallery: true,
       },
     });
 
@@ -50,7 +67,7 @@ export class VehiclesService {
         isCar: true,
         description: true,
         frontImg: true,
-        galleryImg: true,
+        isActive: true,
         user: {
           select: {
             name: true,
@@ -58,6 +75,7 @@ export class VehiclesService {
           },
         },
         Comment: true,
+        gallery: true,
       },
     });
 
@@ -100,7 +118,10 @@ export class VehiclesService {
       throw new HttpException('Vehicle not found', HttpStatus.NOT_FOUND);
     }
 
-    await this.prisma.vehicle.delete({
+    await this.prisma.vehicle.update({
+      data: {
+        isActive: false,
+      },
       where: {
         id: vehicleId,
       },
