@@ -15,6 +15,7 @@ import { IsOwnerMiddleware } from './middlewares/isOwner.middleware';
 import { IsAdminMiddleware } from './middlewares/isAdmin.middleware';
 import { IsSellerOwnerMiddleware } from './middlewares/isSellerOwner.middleware';
 import { IsOwnerCommentMiddleware } from './middlewares/isOwnerComment.middleware';
+
 @Module({
   imports: [
     PrismaModule,

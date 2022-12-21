@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   HttpCode,
+  Delete,
 } from '@nestjs/common';
 import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger/dist/decorators';
 import { Request } from 'express';
@@ -47,8 +48,8 @@ export class VehiclesController {
     return this.vehiclesService.updateVehicle(data, vehicleId);
   }
 
-  @Patch('/inactivate/:vehicleId')
-  @ApiCreatedResponse({ description: 'Soft Delete um veículo' })
+  @Delete(':vehicleId')
+  @ApiCreatedResponse({ description: 'Delete um veículo' })
   @HttpCode(200)
   async deleteVehicle(@Param('vehicleId') vehicleId: string) {
     return this.vehiclesService.deleteVehicle(vehicleId);
