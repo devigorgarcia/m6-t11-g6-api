@@ -48,7 +48,11 @@ export class VehiclesService {
   }
 
   async listVehicles() {
-    const vehicles = await this.prisma.vehicle.findMany();
+    const vehicles = await this.prisma.vehicle.findMany({
+      include: {
+        user: true,
+      },
+    });
 
     return vehicles;
   }
