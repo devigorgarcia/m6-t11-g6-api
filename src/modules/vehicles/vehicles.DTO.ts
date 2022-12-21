@@ -31,7 +31,7 @@ export class createVehicleDTO {
   @ApiProperty()
   @IsOptional()
   @ApiPropertyOptional()
-  gallery?: string[];
+  gallery: string[];
 }
 
 export class updateVehicleDTO {
@@ -63,4 +63,12 @@ export class updateVehicleDTO {
   @ApiProperty()
   @ApiPropertyOptional()
   frontImg?: string;
+  @IsOptional()
+  @ApiProperty()
+  @ApiPropertyOptional()
+  isActive?: boolean;
+  @ApiProperty()
+  @IsOptional()
+  @ApiPropertyOptional()
+  gallery?: string[];
 }

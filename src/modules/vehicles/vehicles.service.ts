@@ -97,10 +97,31 @@ export class VehiclesService {
       throw new HttpException('Vehicle not found', HttpStatus.NOT_FOUND);
     }
 
+    const newGallery = [];
+    if (data.gallery) {
+      data.gallery.forEach((imageURL) => {
+        const newUrl = {
+          url: imageURL,
+        };
+        newGallery.push(newUrl);
+      });
+    }
+
     const updatedVehicle = await this.prisma.vehicle.update({
-      data,
       where: {
         id: vehicleId,
+      },
+      data: {
+        ...data,
+        gallery: {
+          deleteMany: {},
+          create: newGallery.map((item) => {
+            return item;
+          }),
+        },
+      },
+      include: {
+        gallery: true,
       },
     });
 
@@ -118,10 +139,7 @@ export class VehiclesService {
       throw new HttpException('Vehicle not found', HttpStatus.NOT_FOUND);
     }
 
-    await this.prisma.vehicle.update({
-      data: {
-        isActive: false,
-      },
+    await this.prisma.vehicle.delete({
       where: {
         id: vehicleId,
       },
