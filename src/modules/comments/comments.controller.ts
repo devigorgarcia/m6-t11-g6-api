@@ -9,12 +9,14 @@ import {
   Req,
   HttpCode,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 
 @Controller('comments')
+@ApiTags('comments')
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 

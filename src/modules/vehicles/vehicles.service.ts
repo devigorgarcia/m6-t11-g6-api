@@ -74,6 +74,7 @@ export class VehiclesService {
         isActive: true,
         user: {
           select: {
+            id: true,
             name: true,
             descripiton: true,
           },
