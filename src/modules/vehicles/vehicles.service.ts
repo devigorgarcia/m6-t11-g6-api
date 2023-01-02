@@ -49,8 +49,25 @@ export class VehiclesService {
 
   async listVehicles() {
     const vehicles = await this.prisma.vehicle.findMany({
-      include: {
-        user: true,
+      select: {
+        id: true,
+        title: true,
+        price: true,
+        year: true,
+        km: true,
+        isCar: true,
+        description: true,
+        frontImg: true,
+        isActive: true,
+        userId: true,
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            fone: true,
+          },
+        },
       },
     });
 
