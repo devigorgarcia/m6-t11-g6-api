@@ -102,6 +102,19 @@ export class CommentsService {
       where: {
         id: commentId,
       },
+      select: {
+        id: true,
+        content: true,
+        createdAt: true,
+        userId: true,
+        user: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        vehicleId: true,
+      },
     });
 
     if (!comment) {

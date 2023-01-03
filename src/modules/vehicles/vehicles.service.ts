@@ -96,7 +96,21 @@ export class VehiclesService {
             descripiton: true,
           },
         },
-        Comment: true,
+        Comment: {
+          select: {
+            id: true,
+            content: true,
+            createdAt: true,
+            userId: true,
+            user: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+            vehicleId: true,
+          },
+        },
         gallery: true,
       },
     });
