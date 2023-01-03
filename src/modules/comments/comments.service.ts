@@ -38,6 +38,14 @@ export class CommentsService {
     const formatedDate = `${day}/${month}/${year}`;
 
     const newComments = await this.prisma.comment.create({
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
       data: {
         createdAt: formatedDate,
         ...data,
