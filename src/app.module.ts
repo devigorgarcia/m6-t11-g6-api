@@ -12,9 +12,11 @@ import { AddressesModule } from './modules/addresses/addresses.module';
 import { VehiclesModule } from './modules/vehicles/vehicles.module';
 import { CommentsModule } from './modules/comments/comments.module';
 import { IsOwnerMiddleware } from './middlewares/isOwner.middleware';
-import { IsAdminMiddleware } from './middlewares/isAdmin.middleware';
+
 import { IsSellerOwnerMiddleware } from './middlewares/isSellerOwner.middleware';
 import { IsOwnerCommentMiddleware } from './middlewares/isOwnerComment.middleware';
+import { EmailModule } from './modules/email/email.module';
+import { IsAdminMiddleware } from './middlewares/isadmin.middleware';
 
 @Module({
   imports: [
@@ -24,6 +26,7 @@ import { IsOwnerCommentMiddleware } from './middlewares/isOwnerComment.middlewar
     AddressesModule,
     VehiclesModule,
     CommentsModule,
+    EmailModule,
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -61,6 +64,10 @@ export class AppModule implements NestModule {
     consumer.apply(AuthMiddleware, IsOwnerCommentMiddleware).forRoutes({
       path: 'comments/:commentId/comment',
       method: RequestMethod.DELETE,
+    });
+    consumer.apply(AuthMiddleware).forRoutes({
+      path: 'confirmToken',
+      method: RequestMethod.GET,
     });
   }
 }

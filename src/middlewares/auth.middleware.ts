@@ -22,6 +22,9 @@ export class AuthMiddleware implements NestMiddleware {
       token,
       process.env.SECRET_KEY,
       (error: jwt.VerifyErrors, decoded: any) => {
+        if (error) {
+          throw new HttpException('Token invalid', HttpStatus.UNAUTHORIZED);
+        }
         req.user = {
           email: decoded.email,
           id: decoded.id,
