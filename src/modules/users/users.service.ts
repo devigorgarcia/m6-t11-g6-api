@@ -3,9 +3,9 @@ import { PrismaService } from './../../prisma/prisma.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserCreateDTO, UserUpdateDTO } from './users.DTO';
 import { hash } from 'bcrypt';
-import { validate_date } from 'src/utils/dateValidator';
-import { cepValidator } from 'src/utils/cepValidator';
-import { phoneValidator } from 'src/utils/phoneValidator';
+import { validate_date } from './../../utils/dateValidator';
+import { cepValidator } from './../../utils/cepValidator';
+import { phoneValidator } from './../../utils/phoneValidator';
 
 @Injectable()
 export class UsersService {

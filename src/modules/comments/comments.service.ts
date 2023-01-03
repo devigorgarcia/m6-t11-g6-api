@@ -29,8 +29,25 @@ export class CommentsService {
       throw new HttpException('Vehicle not found', HttpStatus.NOT_FOUND);
     }
 
+    const date = new Date();
+
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+
+    const formatedDate = `${day}/${month}/${year}`;
+
     const newComments = await this.prisma.comment.create({
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
       data: {
+        createdAt: formatedDate,
         ...data,
         user: {
           connect: {
