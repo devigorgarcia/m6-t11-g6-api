@@ -1,5 +1,14 @@
-import { Controller, Post, Body, Param, Get } from '@nestjs/common';
-import { ResetPasswordDTO, SendEmailDTO } from './email.DTO';
+import {
+  Controller,
+  Post,
+  Body,
+  Patch,
+  Req,
+  Get,
+  HttpCode,
+} from '@nestjs/common';
+import { Request } from 'express';
+import { SendEmailDTO } from './email.DTO';
 import { EmailService } from './email.service';
 
 @Controller('')
@@ -12,7 +21,14 @@ export class EmailController {
   }
 
   @Get('confirmToken')
-  async resetPassword() {
+  async verifyToken() {
     return this.emailService.verifyToken();
+  }
+
+  @Patch('resetPassword')
+  @HttpCode(204)
+  async resetPassword(@Body() newPassword: string, @Req() request: Request) {
+    const { id } = request.user;
+    return this.emailService.updatePassword(newPassword, id);
   }
 }

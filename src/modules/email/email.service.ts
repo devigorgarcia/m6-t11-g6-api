@@ -1,5 +1,5 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-
+import { hash } from 'bcrypt';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { sendEmail } from 'src/utils/nodemailer';
 import * as jwt from 'jsonwebtoken';
@@ -58,5 +58,20 @@ export class EmailService {
 
   async verifyToken() {
     return true;
+  }
+
+  async updatePassword(newPassword: string, userId: string) {
+    const newHashedPassword = await hash(newPassword, 10);
+
+    await this.prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        password: newHashedPassword,
+      },
+    });
+
+    return 'Password Updated';
   }
 }
