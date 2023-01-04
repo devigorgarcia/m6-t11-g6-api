@@ -69,5 +69,9 @@ export class AppModule implements NestModule {
       path: 'confirmToken',
       method: RequestMethod.GET,
     });
+    consumer.apply(AuthMiddleware).forRoutes({
+      path: 'resetPassword',
+      method: RequestMethod.PATCH,
+    });
   }
 }

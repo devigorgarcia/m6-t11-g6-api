@@ -4,7 +4,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { sendEmail } from 'src/utils/nodemailer';
 import * as jwt from 'jsonwebtoken';
 
-import { SendEmailDTO } from './email.DTO';
+import { ResetPasswordDTO, SendEmailDTO } from './email.DTO';
 
 @Injectable()
 export class EmailService {
@@ -46,11 +46,6 @@ export class EmailService {
 
     const subject = 'Reset Password';
 
-    // Corpo email: Token = ${Token}
-    // e url para inserir o token
-
-    // enviar uma requisição com o token no auth só para validar true e false, ao validar true ele vai para troca de senha e ai faz um patch com o id no token para trocar a senha
-
     return { token: token };
 
     // await sendEmail({ subject, text, to });
@@ -60,8 +55,10 @@ export class EmailService {
     return true;
   }
 
-  async updatePassword(newPassword: string, userId: string) {
-    const newHashedPassword = await hash(newPassword, 10);
+  async updatePassword(data: ResetPasswordDTO, userId: string) {
+    const { password } = data;
+
+    const newHashedPassword = await hash(password, 10);
 
     await this.prisma.user.update({
       where: {
@@ -71,7 +68,5 @@ export class EmailService {
         password: newHashedPassword,
       },
     });
-
-    return 'Password Updated';
   }
 }

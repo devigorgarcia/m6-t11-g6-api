@@ -8,7 +8,7 @@ import {
   HttpCode,
 } from '@nestjs/common';
 import { Request } from 'express';
-import { SendEmailDTO } from './email.DTO';
+import { ResetPasswordDTO, SendEmailDTO } from './email.DTO';
 import { EmailService } from './email.service';
 
 @Controller('')
@@ -27,8 +27,8 @@ export class EmailController {
 
   @Patch('resetPassword')
   @HttpCode(204)
-  async resetPassword(@Body() newPassword: string, @Req() request: Request) {
+  async resetPassword(@Body() data: ResetPasswordDTO, @Req() request: Request) {
     const { id } = request.user;
-    return this.emailService.updatePassword(newPassword, id);
+    return this.emailService.updatePassword(data, id);
   }
 }

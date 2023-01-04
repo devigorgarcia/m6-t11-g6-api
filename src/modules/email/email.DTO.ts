@@ -8,6 +8,4 @@ export class SendEmailDTO {
 export class ResetPasswordDTO {
   @IsNotEmpty()
   password: string;
-  @IsNotEmpty()
-  confirmPassword: string;
 }
