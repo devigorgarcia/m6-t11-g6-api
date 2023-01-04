@@ -46,9 +46,7 @@ export class EmailService {
 
     const subject = 'Reset Password';
 
-    return { token: token };
-
-    // await sendEmail({ subject, text, to });
+    await sendEmail({ subject, text, to });
   }
 
   async verifyToken() {
